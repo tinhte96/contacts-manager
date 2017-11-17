@@ -35,4 +35,8 @@ public class Contact {
     public void setPhoneNumber(String phoneNumber) {
         this.phoneNumber = phoneNumber;
     }
+
+    public String toString(){
+            return (this.name +  ((this.email != null) ? (", " + this.email) : "") + ((this.phoneNumber != null) ? (", " + this.phoneNumber) : ""));
+    }
 }
