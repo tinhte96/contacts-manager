@@ -66,4 +66,39 @@ public class ContactsManager {
             }
         }
     }
+
+    public void editContact (String name, String email, String phoneNumber)
+            throws InvalidContactNameException, InvalidEmailException{
+        boolean existedContact = false;
+        for (Contact c : listContacts){
+            if (c.getName().equals(name)) {
+
+                if (!validEmail(email)) throw new InvalidEmailException();
+                else {
+                    c.setEmail(email);
+                    c.setPhoneNumber(phoneNumber);
+                    existedContact = true;
+                    break;
+                }
+            }
+        }
+        if (!existedContact){
+            throw new InvalidContactNameException();
+        }
+    }
+
+    public void deleteContact(String name)
+            throws InvalidContactNameException{
+        boolean existedContact = false;
+        for (Contact c : listContacts){
+            if (c.getName().equals(name)){
+                this.listContacts.remove(c);
+                existedContact = true;
+                break;
+            }
+        }
+        if (!existedContact){
+            throw new InvalidContactNameException();
+        }
+    }
 }
