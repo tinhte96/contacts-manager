@@ -4,10 +4,13 @@ import java.util.Scanner;
 
 public class UserInterface {
 
-        ContactsManager contactsManager = new ContactsManager();
-        Scanner sc = new Scanner(System.in);
+        Scanner sc;
 
-        public void type_contact() throws InvalidContactNameException, InvalidEmailException{
+        public UserInterface (){
+            sc = new Scanner(System.in);
+        }
+
+        public void askInfoForContact(ContactsManager contactsManager) throws InvalidContactNameException, InvalidEmailException{
             System.out.println("Votre information : ");
             String name = sc.nextLine();
             String email = sc.nextLine();
