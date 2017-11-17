@@ -37,6 +37,8 @@ public class Contact {
     }
 
     public String toString(){
-            return (this.name +  ((this.email != null) ? (", " + this.email) : "") + ((this.phoneNumber != null) ? (", " + this.phoneNumber) : ""));
+            return (this.name
+                    +  ((this.email != null) ? (", " + this.email) : "")
+                    + ((this.phoneNumber != null) ? (", " + this.phoneNumber) : ""));
     }
 }
