@@ -2,6 +2,7 @@ package com.fredericboisguerin.insa;
 
 import javax.naming.InvalidNameException;
 import java.util.ArrayList;
+import java.util.Scanner;
 
 public class ContactsManager {
 
@@ -11,27 +12,30 @@ public class ContactsManager {
         this.listContacts = new ArrayList<Contact>();
     }
 
-    private boolean validEmail(String email){
-        int nbArobar=0;
-        int nbPoint=0;
+    private boolean validEmail(String email) {
+        int nbArobar = 0;
+        int nbPoint = 0;
         boolean arobarBeforePoint = false;
 
-        if (email == null || email.equals("")){
-            return false;
-        }
-        else {
-            for (int i = 0; i < email.length(); i++){
-                if (email.charAt(i) == '@') {
-                    nbArobar++;
-                    arobarBeforePoint = false;
-                }
-                if (email.charAt(i) == '.') {
-                    nbPoint++;
-                    arobarBeforePoint = true;
-                }
+        if (email != null) {
+            if (email.equals("")) {
+                return false;
             }
-            return nbArobar==1 && nbPoint==1 && arobarBeforePoint;
+            else {
+                for (int i = 0; i < email.length(); i++) {
+                    if (email.charAt(i) == '@') {
+                        nbArobar++;
+                        arobarBeforePoint = false;
+                    }
+                    if (email.charAt(i) == '.') {
+                        nbPoint++;
+                        arobarBeforePoint = true;
+                    }
+                }
+                return nbArobar == 1 && nbPoint == 1 && arobarBeforePoint;
+            }
         }
+        return true;
     }
 
     public void addContact(String name, String email, String phoneNumber)
