@@ -9,6 +9,8 @@ import java.io.PrintStream;
 
 import org.junit.Before;
 import org.junit.Test;
+import org.mockito.Mock;
+import org.mockito.Mockito;
 
 import javax.naming.InvalidNameException;
 
@@ -36,7 +38,8 @@ public class ContactsManagerMust {
     }
 
     @Test
-    public void list_one_contact_without_email_nor_phone_number() throws InvalidEmailException, InvalidContactNameException {
+    public void list_one_contact_without_email_nor_phone_number()
+            throws InvalidEmailException, InvalidContactNameException {
         ContactsManager contactsManager = new ContactsManager();
         String noEmail = null;
         String noPhoneNumber = null;
@@ -48,7 +51,8 @@ public class ContactsManagerMust {
     }
 
     @Test
-    public void list_one_contact_without_email() throws InvalidEmailException, InvalidContactNameException {
+    public void list_one_contact_without_email()
+            throws InvalidEmailException, InvalidContactNameException {
         ContactsManager contactsManager = new ContactsManager();
         String noEmail = null;
         contactsManager.addContact(NICOLE_FERRONI_NAME, noEmail, NICOLE_FERRONI_PHONE_NUMBER);
@@ -56,6 +60,25 @@ public class ContactsManagerMust {
         contactsManager.printAllContacts();
 
         String expectedOutput = NICOLE_FERRONI_NAME + FIELD_SEPARATOR + NICOLE_FERRONI_PHONE_NUMBER;
+        assertThat(standardOutput(), containsString(expectedOutput));
+    }
+
+    @Test
+    public void test_to_string_contacts_list()
+            throws InvalidContactNameException, InvalidEmailException{
+
+        ContactsManager contactsManager = new ContactsManager();
+        contactsManager.addContact(NICOLE_FERRONI_NAME, NICOLE_FERRONI_EMAIL, NICOLE_FERRONI_PHONE_NUMBER);
+        contactsManager.addContact(GUILLAUME_MEURICE_NAME, GUILLAUME_MEURICE_EMAIL, GUILLAUME_MEURICE_PHONE_NUMBER);
+
+        System.out.println(contactsManager.toString());
+
+        String expectedOutput =
+                NICOLE_FERRONI_NAME + FIELD_SEPARATOR
+                        + NICOLE_FERRONI_EMAIL + FIELD_SEPARATOR + NICOLE_FERRONI_PHONE_NUMBER
+                        +"\n"+GUILLAUME_MEURICE_NAME + FIELD_SEPARATOR
+                        + GUILLAUME_MEURICE_EMAIL + FIELD_SEPARATOR
+                        +GUILLAUME_MEURICE_PHONE_NUMBER;
         assertThat(standardOutput(), containsString(expectedOutput));
     }
 
@@ -110,20 +133,8 @@ public class ContactsManagerMust {
     }
 
     @Test
-    public void fail_if_name_is_not_valid() throws InvalidEmailException, InvalidContactNameException {
-        ContactsManager contactsManager = new ContactsManager();
-        contactsManager.addContact(NICOLE_FERRONI_NAME, NICOLE_FERRONI_EMAIL, NICOLE_FERRONI_PHONE_NUMBER);
-        contactsManager.addContact(GUILLAUME_MEURICE_NAME, GUILLAUME_MEURICE_EMAIL, GUILLAUME_MEURICE_PHONE_NUMBER);
-
-        contactsManager.editContact("meuri","lal","dfs");
-
-        String expectedOutput = "InvalidName";
-        assertThat(standardOutput(), is(expectedOutput + System.lineSeparator()));
-
-    }
-
-    @Test
-    public void list_edited_contacts() throws InvalidEmailException, InvalidContactNameException {
+    public void list_edited_contacts()
+            throws InvalidEmailException, InvalidContactNameException {
         ContactsManager contactsManager = new ContactsManager();
         contactsManager.addContact(NICOLE_FERRONI_NAME, NICOLE_FERRONI_EMAIL, NICOLE_FERRONI_PHONE_NUMBER);
         contactsManager.addContact(GUILLAUME_MEURICE_NAME, GUILLAUME_MEURICE_EMAIL, GUILLAUME_MEURICE_PHONE_NUMBER);
@@ -150,6 +161,18 @@ public class ContactsManagerMust {
         String standardOutput = standardOutput();
         String firstContactInfo = NICOLE_FERRONI_NAME + FIELD_SEPARATOR + NICOLE_FERRONI_EMAIL + FIELD_SEPARATOR + NICOLE_FERRONI_PHONE_NUMBER;
         assertThat(standardOutput, containsString(firstContactInfo));
+    }
+
+    @Test
+    public void appel_set_name_and_set_phoneNumber_in_edit_contacts() throws InvalidContactNameException, InvalidEmailException{
+
+        ContactsManager contactsManager = Mockito.mock(ContactsManager.class);
+        contactsManager.addContact(NICOLE_FERRONI_NAME, NICOLE_FERRONI_EMAIL, NICOLE_FERRONI_PHONE_NUMBER);
+        contactsManager.addContact(GUILLAUME_MEURICE_NAME, GUILLAUME_MEURICE_EMAIL, GUILLAUME_MEURICE_PHONE_NUMBER);
+
+        contactsManager.editContact(GUILLAUME_MEURICE_NAME,NEW_MEURICE_EMAIL,NEW_MEURICE_PHONE_NUMBER);
+        Mockito.verify(contactsManager).editContact(GUILLAUME_MEURICE_NAME, NEW_MEURICE_EMAIL, NEW_MEURICE_PHONE_NUMBER);
+
     }
     private String standardOutput() {
         return out.toString();
